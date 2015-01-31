@@ -1,0 +1,27 @@
+[package]
+
+name = "tcod_window"
+version = "0.0.1"
+authors = [ "Nikita Pekin <contact@nikitapek.in>" ]
+keywords = ["tcod", "window", "piston"]
+description = "A TCOD back-end for the Piston game engine"
+license = "GNU GPL v3.0"
+readme = "README.md"
+repository = "https://github.com/indiv0/tcod_window.git"
+homepage = "https://github.com/indiv0/tcod_window"
+
+[lib]
+
+name = "tcod_window"
+
+[dependencies.pistoncore-input]
+git = "https://github.com/PistonDevelopers/input"
+
+[dependencies.pistoncore-window]
+git = "https://github.com/PistonDevelopers/window"
+
+[dependencies.quack]
+git = "https://github.com/PistonDevelopers/quack"
+
+[dependencies.tcod]
+git = "https://github.com/tomassedovic/tcod-rs.git"
