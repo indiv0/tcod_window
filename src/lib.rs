@@ -115,12 +115,6 @@ impl TcodWindow {
     }
 }
 
-impl Drop for TcodWindow {
-    fn drop(&mut self) {
-        self.set_mut(CaptureCursor(false));
-    }
-}
-
 quack! {
     _obj: TcodWindow[]
     get:
