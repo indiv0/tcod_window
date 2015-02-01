@@ -1,4 +1,5 @@
-# tcod_window
+# tcod_window [![Build Status](https://travis-ci.org/indiv0/tcod_window.svg?branch=master)](https://travis-ci.org/indiv0/tcod_window)
+
 A TCOD back-end for the Piston game engine
 
 Maintainers: @indiv0
