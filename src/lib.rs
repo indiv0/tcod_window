@@ -14,7 +14,6 @@ use window::{
     ShouldClose, Size, PollEvent, SwapBuffers,
     CaptureCursor, DrawSize, Title, ExitOnEsc
 };
-use quack::Set;
 use tcod::Console;
 
 pub struct TcodWindow {
