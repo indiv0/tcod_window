@@ -14,14 +14,8 @@ homepage = "https://github.com/indiv0/tcod_window"
 
 name = "tcod_window"
 
-[dependencies.pistoncore-input]
-git = "https://github.com/PistonDevelopers/input"
-
-[dependencies.pistoncore-window]
-git = "https://github.com/PistonDevelopers/window"
-
-[dependencies.quack]
-git = "https://github.com/PistonDevelopers/quack"
-
-[dependencies.tcod]
-git = "https://github.com/tomassedovic/tcod-rs.git"
+[dependencies]
+pistoncore-input = ">= 0.0.5"
+pistoncore-window = ">= 0.0.5"
+quack = ">= 0.0.8"
+tcod = ">= 0.4.6"
