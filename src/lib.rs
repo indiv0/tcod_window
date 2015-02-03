@@ -117,35 +117,35 @@ impl TcodWindow {
 quack! {
     _obj: TcodWindow[]
     get:
-        fn () -> ShouldClose { ShouldClose(_obj.should_close) }
-        fn () -> Size {
+        fn () -> ShouldClose [] { ShouldClose(_obj.should_close) }
+        fn () -> Size [] {
             let (w, h) = (_obj.window.width(), _obj.window.height());
             Size([w as u32, h as u32])
         }
-        fn () -> DrawSize {
+        fn () -> DrawSize [] {
             //let (w, h) = _obj.window.get_drawable_size();
             let (w, h) = (_obj.window.width(), _obj.window.height());
             DrawSize([w as u32, h as u32])
         }
         // TODO: Remove the .clone()
-        fn () -> Title { Title(_obj.title.clone()) }
-        fn () -> ExitOnEsc { ExitOnEsc(_obj.exit_on_esc) }
+        fn () -> Title [] { Title(_obj.title.clone()) }
+        fn () -> ExitOnEsc [] { ExitOnEsc(_obj.exit_on_esc) }
     set:
-        fn (val: CaptureCursor) {
+        fn (val: CaptureCursor) [] {
             //sdl2::mouse::set_relative_mouse_mode(val.0)
         }
-        fn (val: ShouldClose) { _obj.should_close = val.0 }
-        fn (val: Title) {
+        fn (val: ShouldClose) [] { _obj.should_close = val.0 }
+        fn (val: Title) [] {
             Console::set_window_title(&*val.0);
             _obj.title = val.0
         }
-        fn (val: ExitOnEsc) { _obj.exit_on_esc = val.0 }
+        fn (val: ExitOnEsc) [] { _obj.exit_on_esc = val.0 }
     action:
-        fn (__: SwapBuffers) -> () {
+        fn (__: SwapBuffers) -> () [] {
             //_obj.window.gl_swap_window()
             Console::flush()
         }
-        fn (__: PollEvent) -> Option<Input> { _obj.poll_event() }
+        fn (__: PollEvent) -> Option<Input> [] { _obj.poll_event() }
 }
 
 pub fn tcod_map_key(key: tcod::Key) -> keyboard::Key {
