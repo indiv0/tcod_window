@@ -9,6 +9,7 @@ extern crate tcod;
 extern crate window;
 
 use input::{ keyboard, Button, MouseButton, Input, Motion };
+use quack::Associative;
 use tcod::Console;
 use window::{
     WindowSettings,
@@ -146,6 +147,10 @@ quack! {
             Console::flush()
         }
         fn (__: PollEvent) -> Option<Input> [] { _obj.poll_event() }
+}
+
+impl Associative for (PollEvent, TcodWindow) {
+    type Type = Input;
 }
 
 pub fn tcod_map_key(key: tcod::Key) -> keyboard::Key {
