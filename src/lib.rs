@@ -42,14 +42,14 @@ impl TcodWindow {
             // TODO: determine if there's a better way to initialize the
             // MouseState.
             mouse_state_prev: tcod::MouseState {
-                x: 0is,
-                y: 0is,
-                dx: 0is,
-                dy: 0is,
-                cx: 0is,
-                cy: 0is,
-                dcx: 0is,
-                dcy: 0is,
+                x: 0isize,
+                y: 0isize,
+                dx: 0isize,
+                dy: 0isize,
+                cx: 0isize,
+                cy: 0isize,
+                dcx: 0isize,
+                dcy: 0isize,
                 lbutton: false,
                 rbutton: false,
                 mbutton: false,
