@@ -9,12 +9,12 @@ extern crate tcod;
 extern crate window;
 
 use input::{ keyboard, Button, MouseButton, Input, Motion };
+use tcod::Console;
 use window::{
     WindowSettings,
     ShouldClose, Size, PollEvent, SwapBuffers,
     CaptureCursor, DrawSize, Title, ExitOnEsc
 };
-use tcod::Console;
 
 pub struct TcodWindow {
     pub window: tcod::Console,
