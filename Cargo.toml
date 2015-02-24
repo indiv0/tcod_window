@@ -1,7 +1,7 @@
 [package]
 
 name = "tcod_window"
-version = "0.0.2"
+version = "0.0.3"
 authors = [ "Nikita Pekin <contact@nikitapek.in>" ]
 keywords = ["tcod", "window", "piston"]
 description = "A TCOD back-end for the Piston game engine"
