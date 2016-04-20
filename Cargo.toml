@@ -7,7 +7,7 @@ license = "GPL-3.0"
 name = "tcod_window"
 readme = "README.md"
 repository = "https://github.com/indiv0/tcod_window.git"
-version = "0.0.3"
+version = "0.1.0"
 
 [dependencies]
 pistoncore-input = "0.10.0"

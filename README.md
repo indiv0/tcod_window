@@ -11,7 +11,7 @@ file:
 
 ```toml
 [dependencies]
-tcod_window = "0.0.3"
+tcod_window = "0.1.0"
 ```
 
 ## Usage
