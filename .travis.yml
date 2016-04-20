@@ -1,9 +1,70 @@
+sudo: false
 language: rust
+addons:
+  apt:
+    packages:
+      - libsdl1.2-dev
+      # necessary for `travis-cargo coveralls --no-sudo`
+      - libcurl4-openssl-dev
+      - libelf-dev
+      - libdw-dev
+      - binutils-dev # optional: only required for the --verify flag of coveralls
+# run builds for all the trains (and more)
+rust:
+  - nightly
+  - beta
+  # check that it compiles on the latest stable compiler
+  - stable
+  # and the first stable one (this should be bumped as the minimum Rust version
+  # required changes)
+  # currently the project only compiles on the latest stable, so this is
+  # commented out for now.
+  #- 1.9.0
 os:
-    - linux
-    - osx
+  - linux
+  - osx
+cache:
+  directories:
+    - $HOME/.cargo
+before_install:
+  - |
+      if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 install:
-    - sudo apt-get update
-    - sudo apt-get install gcc g++ make upx electric-fence libsdl1.2-dev mercurial
+  - |
+      if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install sdl; fi
+before_script:
+  # load travis-cargo
+  - |
+      pip install 'travis-cargo<0.2' --user &&
+      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export PATH=$HOME/.local/bin/:$PATH; fi
+      if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH=$HOME/Library/Python/2.7/bin:$PATH; fi
+# the main build
 script:
-    - cargo build -v
+  - |
+      travis-cargo build &&
+      travis-cargo test &&
+      travis-cargo bench &&
+      travis-cargo --only stable doc
+after_success:
+  # upload the documentation from the build with stable (automatically only
+  # actually runs from the master branch, not individual PRs)
+  - travis-cargo --only stable doc-upload
+  # measure code coverage and upload to coveralls.io (the verify argument
+  # mitigates kcov crashes due to malformed debuginfo, at the cost of some
+  # speed. <https://github.com/huonw/travis-cargo/issues/12>)
+  - travis-cargo coveralls --no-sudo --verify
+env:
+  global:
+    # override the default '--features unstable' used for the nightly branch
+    - TRAVIS_CARGO_NIGHTLY_FEATURE="nightly-testing"
+    # encrypted Github token for doc upload
+    - secure: kQKcc0WiucWrIGC+t7ASfoKGs9nGdll94egke0pFTBIsh8e4dPgUK6hGBGfJE32FJS6VB3lyoAqNQQDCLnYwxsq2IOL4T1F65K4bDS9IvR1HXduvXj+z5NHU5VAerD7Czc0q+9Na2qEZQPEW9u6+eX4xX5E0c4p0eUoGMNQaXYg5bzRJ68uC8d8WAj2KOXx8G7Seak5xBmvP5vOBWJjCMv7leVoWwfP9OI+MizzDhzeYL5ux49STsP67/jrL37Otdly6Cvv9NsamCyoZ3McQq436pViUl2XJ3/ctvc17JNm+FdIdjKaZL1fMje2xyvYK9weyKjRiMmkDETWvsCFqL/Y37Oe80kh+KFKYSxgl6Q5IaiO35hUjBRDVmi/zuZGD8cI3GVE/qFj2yN+/srBzORgpJgofPaMurI6udQoCNiNqvAh9PJ0KpKvkCGNTUUXDYcv9k4BLIpudY0HqTNM341MkOD98NC99TsA9eJwWyEre3rLqkVztTzkGa7VM1MT/6bgVi+BdPfO3AEy5xs1Y4ut2Qzl54rFK2AGRFDdJ4CvyQykBg/EDxpkI7w0VdqUyOrSWNQFqv4xTwXPd91r2OhUUm76gsN50gwZTxJvae/aIGRdd3GyNQ149HHzNB5HLpct5KsGlCcwQ7QcbKFQkpCLC0R3sgeKGUaRbqZjwN5M=
+branches:
+  only:
+    - master
+    - auto
+notifications:
+  email: false
+matrix:
+  allow_failures:
+    - rust: nightly
