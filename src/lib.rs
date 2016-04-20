@@ -120,7 +120,7 @@ impl TcodWindow {
     /// use tcod_window::TcodWindow;
     ///
     /// # fn main() {
-    /// let settings =WindowSettings::new(
+    /// let settings = WindowSettings::new(
     ///     "My Application".to_owned(),
     ///     Size {
     ///         width: 100,
