@@ -3,6 +3,9 @@ extern crate piston;
 extern crate tcod;
 extern crate tcod_window;
 
+use std::cell::RefCell;
+use std::rc::Rc;
+
 use fps_counter::FPSCounter;
 use piston::event_loop::{EventLoop, Events};
 use piston::input::Event::{Render, Update};
@@ -23,12 +26,13 @@ fn main() {
                                        })
                        .exit_on_esc(true);
 
-    let console = Root::initializer()
+    let root = Root::initializer()
                       .size(settings.get_size().width as i32,
                             settings.get_size().height as i32)
                       .title(settings.get_title())
                       .renderer(Renderer::SDL)
                       .init();
+    let console = Rc::new(RefCell::new(root));
 
     let mut window = TcodWindow::with_console(console, settings);
     let mut events = window.events().ups(140).max_fps(10000);
