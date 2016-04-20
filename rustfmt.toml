@@ -1,0 +1,11 @@
+enum_trailing_comma = true
+ideal_width = 80
+fn_args_density = "Compressed"
+match_block_trailing_comma = true
+max_width = 99
+reorder_imports = true
+report_fixme = "Always"
+report_todo = "Always"
+struct_trailing_comma = "Always"
+wrap_comments = true
+write_mode = "Overwrite"

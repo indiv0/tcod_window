@@ -1,21 +1,25 @@
 [package]
-
-name = "tcod_window"
-version = "0.0.3"
-authors = [ "Nikita Pekin <contact@nikitapek.in>" ]
-keywords = ["tcod", "window", "piston"]
+authors = ["Nikita Pekin <contact@nikitapek.in>"]
 description = "A TCOD back-end for the Piston game engine"
+homepage = "https://github.com/indiv0/tcod_window"
+keywords = ["tcod", "window", "piston"]
 license = "GPL-3.0"
+name = "tcod_window"
 readme = "README.md"
 repository = "https://github.com/indiv0/tcod_window.git"
-homepage = "https://github.com/indiv0/tcod_window"
-
-[lib]
-
-name = "tcod_window"
+version = "0.0.3"
 
 [dependencies]
-pistoncore-input = "0.0.5"
-pistoncore-window = "0.0.12"
-quack = "0.0.13"
-tcod = "0.5.0"
+pistoncore-input = "0.10.0"
+pistoncore-window = "0.17.0"
+tcod = "0.9.0"
+
+[dependencies.clippy]
+optional = true
+version = "0.0.63"
+
+[features]
+nightly-testing = ["clippy"]
+
+[lib]
+name = "tcod_window"
