@@ -11,7 +11,6 @@
             <a href="https://crates.io/crates/tcod_window" title="Crates.io"><img src="https://img.shields.io/crates/v/tcod_window.svg" alt="crates-io"></img></a>
             <a href="#License" title="License: MIT/Apache-2.0"><img src="https://img.shields.io/crates/l/tcod_window.svg" alt="license-badge"></img></a>
             <a href="https://coveralls.io/github/indiv0/tcod_window?branch=master" title="Coverage Status"><img src="https://coveralls.io/repos/github/indiv0/tcod_window/badge.svg?branch=master" alt="coveralls-badge"></img></a>
-            <a href="http://clippy.bashy.io/github/indiv0/tcod_window/master/log" title="Clippy Linting Result"><img src="http://clippy.bashy.io/github/indiv0/tcod_window/master/badge.svg" alt="clippy-lint-badge"></img></a>
         </td>
     </tr>
 </table>
