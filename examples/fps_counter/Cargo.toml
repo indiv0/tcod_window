@@ -1,0 +1,16 @@
+[package]
+authors = []
+name = "fps_counter"
+version = "0.0.1"
+
+[[bin]]
+name = "fps_counter"
+path = "main.rs"
+
+[dependencies]
+fps_counter = "0.2.0"
+piston = "0.20.0"
+tcod = "0.9.0"
+
+[dependencies.tcod_window]
+path = "../../"

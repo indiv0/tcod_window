@@ -10,20 +10,13 @@ To use this as a dependency, add the following code to your Cargo.toml
 file:
 
 ```toml
-[dependencies.tcod_window]
-git = "https://github.com/indiv0/tcod_window"
+[dependencies]
+tcod_window = "0.0.3"
 ```
 
-## Creating a Window
+## Usage
 
-```rust
-let mut window = TcodWindow::new(
-    WindowSettings {
-        title: "My Application".to_string(),
-        size: [80, 50],
-        fullscreen: false,
-        exit_on_esc: true,
-        samples: 0,
-    }
-);
-```
+For usage examples, please the see the [examples][examples] directory of the
+project.
+
+[examples]: https://github.com/indiv0/tcod_window/tree/master/examples "tcod_window - Examples"
