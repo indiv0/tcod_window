@@ -2,8 +2,16 @@
 authors = ["Nikita Pekin <contact@nikitapek.in>"]
 description = "A TCOD back-end for the Piston game engine"
 homepage = "https://github.com/indiv0/tcod_window"
+include = [
+    "CHANGELOG.md",
+    "Cargo.toml",
+    "LICENSE-APACHE",
+    "LICENSE-MIT",
+    "README.md",
+    "src/**/*.rs",
+]
 keywords = ["tcod", "window", "piston"]
-license = "GPL-3.0"
+license = "MIT/Apache-2.0"
 name = "tcod_window"
 readme = "README.md"
 repository = "https://github.com/indiv0/tcod_window.git"
