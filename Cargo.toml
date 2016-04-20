@@ -2,14 +2,7 @@
 authors = ["Nikita Pekin <contact@nikitapek.in>"]
 description = "A TCOD back-end for the Piston game engine"
 homepage = "https://github.com/indiv0/tcod_window"
-include = [
-    "CHANGELOG.md",
-    "Cargo.toml",
-    "LICENSE-APACHE",
-    "LICENSE-MIT",
-    "README.md",
-    "src/**/*.rs",
-]
+include = ["CHANGELOG.md", "Cargo.toml", "LICENSE-APACHE", "LICENSE-MIT", "README.md", "src/**/*.rs"]
 keywords = ["tcod", "window", "piston"]
 license = "MIT/Apache-2.0"
 name = "tcod_window"
@@ -25,6 +18,10 @@ tcod = "0.9.0"
 [dependencies.clippy]
 optional = true
 version = "0.0.63"
+
+[dev-dependencies]
+piston = "0.20.0"
+tcod = "0.9.0"
 
 [features]
 nightly-testing = ["clippy"]

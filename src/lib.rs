@@ -7,10 +7,36 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+#![deny(missing_docs)]
 #![cfg_attr(feature = "nightly-testing", feature(plugin))]
 #![cfg_attr(feature = "clippy", plugin(clippy))]
 
-//! A TCOD back-end for the Piston game engine.
+//! This crate provides a TCOD back-end for the Piston game engine.
+//!
+//! # Example
+//!
+//! The following example shows a quick example of the basic functionality of
+//! `TcodWindow`.
+//!
+//! ```
+//! extern crate piston;
+//! extern crate tcod_window;
+//!
+//! use piston::window::{Size, WindowSettings};
+//! use tcod_window::TcodWindow;
+//!
+//! fn main() {
+//!     let mut window = TcodWindow::new(
+//!         WindowSettings::new(
+//!             "My Application".to_owned(),
+//!             Size {
+//!                 width: 100,
+//!                 height: 100,
+//!             }
+//!         )
+//!     );
+//! }
+//! ```
 
 extern crate input;
 #[macro_use]
@@ -27,7 +53,9 @@ use tcod::Console;
 use tcod::console::Root;
 use window::{AdvancedWindow, BuildFromWindowSettings, Size, Window, WindowSettings};
 
+/// A window implemented by a TCOD back-end.
 pub struct TcodWindow {
+    /// TCOD `Root` window used for rendering.
     pub window: Rc<RefCell<Root>>,
     title: String,
     should_close: bool,
@@ -37,6 +65,32 @@ pub struct TcodWindow {
 }
 
 impl TcodWindow {
+    /// Create a new game window from the provided `WindowSettings`.
+    ///
+    /// Internally, it initializes a new TCOD `Root` with the size and title
+    /// specified in the `WindowSettings`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # extern crate piston;
+    /// # extern crate tcod_window;
+    /// #
+    /// use piston::window::{Size, WindowSettings};
+    /// use tcod_window::TcodWindow;
+    ///
+    /// # fn main() {
+    /// let mut window = TcodWindow::new(
+    ///     WindowSettings::new(
+    ///         "My Application".to_owned(),
+    ///         Size {
+    ///             width: 100,
+    ///             height: 100,
+    ///         }
+    ///     )
+    /// );
+    /// # }
+    /// ```
     pub fn new(settings: WindowSettings) -> Self {
         let console = Root::initializer()
                           .size(settings.get_size().width as i32,
@@ -48,6 +102,41 @@ impl TcodWindow {
         Self::with_console(console, settings)
     }
 
+    /// Create a new game window from an existing TCOD `Root` console wrapped as
+    /// an `Rc<RefCell<Root>>`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # extern crate piston;
+    /// # extern crate tcod;
+    /// # extern crate tcod_window;
+    /// #
+    /// use std::cell::RefCell;
+    /// use std::rc::Rc;
+    /// #
+    /// use piston::window::{Size, WindowSettings};
+    /// use tcod::console::Root;
+    /// use tcod_window::TcodWindow;
+    ///
+    /// # fn main() {
+    /// let settings =WindowSettings::new(
+    ///     "My Application".to_owned(),
+    ///     Size {
+    ///         width: 100,
+    ///         height: 100,
+    ///     }
+    /// );
+    /// let root = Root::initializer()
+    ///                 .size(settings.get_size().width as i32,
+    ///                       settings.get_size().height as i32)
+    ///                 .title(settings.get_title())
+    ///                 .init();
+    /// let console = Rc::new(RefCell::new(root));
+    ///
+    /// let mut window = TcodWindow::with_console(console, settings);
+    /// # }
+    /// ```
     pub fn with_console(console: Rc<RefCell<Root>>, settings: WindowSettings) -> Self {
         TcodWindow {
             window: console,
@@ -158,6 +247,29 @@ impl AdvancedWindow for TcodWindow {
     fn set_capture_cursor(&mut self, _value: bool) {}
 }
 
+/// Maps a TCOD key to a piston-input key.
+///
+/// # Examples
+///
+/// ```
+/// # extern crate piston;
+/// # extern crate tcod;
+/// # extern crate tcod_window;
+/// #
+/// use piston::input::Key as PistonKey;
+/// use tcod::input::{Key, KeyCode};
+/// use tcod_window::tcod_map_key;
+///
+/// # fn main() {
+/// let tcod_key = Key {
+///     code: KeyCode::Char,
+///     printable: 'A',
+///     ..Key::default()
+/// };
+///
+/// assert_eq!(tcod_map_key(tcod_key), PistonKey::A);
+/// # }
+/// ```
 pub fn tcod_map_key(key: TcodKey) -> PistonKey {
     match key.code {
         KeyCode::NoKey => PistonKey::Unknown,
@@ -229,6 +341,32 @@ pub fn tcod_map_key(key: TcodKey) -> PistonKey {
     }
 }
 
+/// Maps a TCOD mouse state change to a piston-input button.
+///
+/// # Examples
+///
+/// ```
+/// # extern crate piston;
+/// # extern crate tcod;
+/// # extern crate tcod_window;
+/// #
+/// use piston::input::mouse::MouseButton;
+/// use tcod::input::Mouse;
+/// use tcod_window::tcod_map_mouse;
+///
+/// # fn main() {
+/// let prev_state = Mouse {
+///     lbutton: false,
+///     ..Mouse::default()
+/// };
+/// let state = Mouse {
+///     lbutton: true,
+///     ..Mouse::default()
+/// };
+///
+/// assert_eq!(tcod_map_mouse(prev_state, &state), MouseButton::Left);
+/// # }
+/// ```
 #[cfg_attr(feature = "clippy", allow(if_not_else))]
 pub fn tcod_map_mouse(prev_state: Mouse, state: &Mouse) -> MouseButton {
     if prev_state.lbutton != state.lbutton {
