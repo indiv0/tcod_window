@@ -21,7 +21,6 @@ version = "0.0.63"
 
 [dev-dependencies]
 piston = "0.20.0"
-tcod = "0.9.0"
 
 [features]
 nightly-testing = ["clippy"]
