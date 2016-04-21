@@ -120,7 +120,7 @@ impl TcodWindow {
     /// use tcod_window::TcodWindow;
     ///
     /// # fn main() {
-    /// let settings =WindowSettings::new(
+    /// let settings = WindowSettings::new(
     ///     "My Application".to_owned(),
     ///     Size {
     ///         width: 100,
@@ -377,5 +377,329 @@ pub fn tcod_map_mouse(prev_state: Mouse, state: &Mouse) -> MouseButton {
         MouseButton::Middle
     } else {
         MouseButton::Unknown
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    extern crate piston;
+
+    use self::piston::window::{Size, WindowSettings};
+
+    use super::TcodWindow;
+    use super::tcod::input::{Key, KeyCode};
+
+    fn tcod_key_from_keycode(key_code: KeyCode) -> Key {
+        Key {
+            code: key_code,
+            ..Key::default()
+        }
+    }
+
+    fn tcod_key_from_char(c: char) -> Key {
+        Key {
+            code: KeyCode::Char,
+            printable: c,
+            ..Key::default()
+        }
+    }
+
+    #[test]
+    fn test_new() {
+        let _ = TcodWindow::new(
+            WindowSettings::new(
+               "My Application".to_owned(),
+                Size {
+                    width: 100,
+                    height: 100,
+                }
+            )
+        );
+    }
+
+    #[test]
+    fn test_from_console() {
+        use std::cell::RefCell;
+        use std::rc::Rc;
+
+        use super::tcod::console::Root;
+
+        let settings = WindowSettings::new(
+            "My Application".to_owned(),
+            Size {
+                width: 100,
+                height: 100,
+            }
+        );
+        let root = Root::initializer()
+                        .size(settings.get_size().width as i32,
+                              settings.get_size().height as i32)
+                        .title(settings.get_title())
+                        .init();
+        let console = Rc::new(RefCell::new(root));
+
+        let _ = TcodWindow::with_console(console, settings);
+    }
+
+    #[test]
+    fn test_build_from_window_settings() {
+        let settings = WindowSettings::new(
+               "My Application".to_owned(),
+                Size {
+                    width: 100,
+                    height: 100,
+                }
+            )
+            .exit_on_esc(true);
+
+        let _: TcodWindow = settings.build()
+            .expect("Failed to build window.");
+    }
+
+    #[test]
+    fn test_window() {
+        use self::piston::window::Window;
+
+        let mut window = TcodWindow::new(
+            WindowSettings::new(
+               "My Application".to_owned(),
+                Size {
+                    width: 100,
+                    height: 100,
+                }
+            )
+        );
+
+        assert_eq!(window.should_close(), false);
+        window.set_should_close(true);
+        assert_eq!(window.should_close(), true);
+
+        window.swap_buffers();
+
+        let size = window.size();
+        assert_eq!(size.width, 100);
+        assert_eq!(size.height, 100);
+
+        assert_eq!(window.poll_event(), None);
+
+        let draw_size = window.draw_size();
+        assert_eq!(draw_size.width, 100);
+        assert_eq!(draw_size.height, 100);
+    }
+
+    #[test]
+    fn test_advanced_window() {
+        use self::piston::window::AdvancedWindow;
+
+        let mut window = TcodWindow::new(
+            WindowSettings::new(
+               "My Application".to_owned(),
+                Size {
+                    width: 100,
+                    height: 100,
+                }
+            )
+        );
+
+        assert_eq!(window.get_title(), "My Application".to_owned());
+        window.set_title("some other name".to_owned());
+        assert_eq!(window.get_title(), "some other name".to_owned());
+
+        assert_eq!(window.get_exit_on_esc(), false);
+        window.set_exit_on_esc(true);
+        assert_eq!(window.get_exit_on_esc(), true);
+
+        window.set_capture_cursor(true);
+    }
+
+    #[test]
+    #[cfg_attr(feature = "clippy", allow(cyclomatic_complexity))]
+    fn test_tcod_map_key() {
+        use self::piston::input::Key as PistonKey;
+
+        use super::tcod_map_key;
+
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NoKey)), PistonKey::Unknown);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Escape)), PistonKey::Escape);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Backspace)), PistonKey::Backspace);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Tab)), PistonKey::Tab);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Enter)), PistonKey::Return);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Shift)), PistonKey::LShift);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Control)), PistonKey::LCtrl);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Alt)), PistonKey::LAlt);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Pause)), PistonKey::Pause);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::CapsLock)), PistonKey::CapsLock);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::PageUp)), PistonKey::PageUp);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::PageDown)), PistonKey::PageDown);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::End)), PistonKey::End);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Home)), PistonKey::Home);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Up)), PistonKey::Up);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Left)), PistonKey::Left);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Right)), PistonKey::Right);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Down)), PistonKey::Down);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::PrintScreen)), PistonKey::PrintScreen);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Insert)), PistonKey::Insert);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Delete)), PistonKey::Delete);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::LeftWin)), PistonKey::LGui);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::RightWin)), PistonKey::RGui);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Apps)), PistonKey::Application);
+        // The numbers on the numeric keypad
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPad0)), PistonKey::NumPad0);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPad1)), PistonKey::NumPad1);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPad2)), PistonKey::NumPad2);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPad3)), PistonKey::NumPad3);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPad4)), PistonKey::NumPad4);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPad5)), PistonKey::NumPad5);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPad6)), PistonKey::NumPad6);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPad7)), PistonKey::NumPad7);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPad8)), PistonKey::NumPad8);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPad9)), PistonKey::NumPad9);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPadAdd)), PistonKey::NumPadPlus);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPadSubtract)), PistonKey::NumPadMinus);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPadDivide)), PistonKey::NumPadDivide);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPadMultiply)), PistonKey::NumPadMultiply);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPadDecimal)), PistonKey::NumPadDecimal);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumPadEnter)), PistonKey::NumPadEnter);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::F1)), PistonKey::F1);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::F2)), PistonKey::F2);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::F3)), PistonKey::F3);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::F4)), PistonKey::F4);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::F5)), PistonKey::F5);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::F6)), PistonKey::F6);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::F7)), PistonKey::F7);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::F8)), PistonKey::F8);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::F9)), PistonKey::F9);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::F10)), PistonKey::F10);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::F11)), PistonKey::F11);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::F12)), PistonKey::F12);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::NumLock)), PistonKey::NumLockClear);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::ScrollLock)), PistonKey::ScrollLock);
+        assert_eq!(tcod_map_key(tcod_key_from_keycode(KeyCode::Spacebar)), PistonKey::Space);
+        // Uppercase characters
+        assert_eq!(tcod_map_key(tcod_key_from_char('A')), PistonKey::A);
+        assert_eq!(tcod_map_key(tcod_key_from_char('B')), PistonKey::B);
+        assert_eq!(tcod_map_key(tcod_key_from_char('C')), PistonKey::C);
+        assert_eq!(tcod_map_key(tcod_key_from_char('D')), PistonKey::D);
+        assert_eq!(tcod_map_key(tcod_key_from_char('E')), PistonKey::E);
+        assert_eq!(tcod_map_key(tcod_key_from_char('F')), PistonKey::F);
+        assert_eq!(tcod_map_key(tcod_key_from_char('G')), PistonKey::G);
+        assert_eq!(tcod_map_key(tcod_key_from_char('H')), PistonKey::H);
+        assert_eq!(tcod_map_key(tcod_key_from_char('I')), PistonKey::I);
+        assert_eq!(tcod_map_key(tcod_key_from_char('J')), PistonKey::J);
+        assert_eq!(tcod_map_key(tcod_key_from_char('K')), PistonKey::K);
+        assert_eq!(tcod_map_key(tcod_key_from_char('L')), PistonKey::L);
+        assert_eq!(tcod_map_key(tcod_key_from_char('M')), PistonKey::M);
+        assert_eq!(tcod_map_key(tcod_key_from_char('N')), PistonKey::N);
+        assert_eq!(tcod_map_key(tcod_key_from_char('O')), PistonKey::O);
+        assert_eq!(tcod_map_key(tcod_key_from_char('P')), PistonKey::P);
+        assert_eq!(tcod_map_key(tcod_key_from_char('Q')), PistonKey::Q);
+        assert_eq!(tcod_map_key(tcod_key_from_char('R')), PistonKey::R);
+        assert_eq!(tcod_map_key(tcod_key_from_char('S')), PistonKey::S);
+        assert_eq!(tcod_map_key(tcod_key_from_char('T')), PistonKey::T);
+        assert_eq!(tcod_map_key(tcod_key_from_char('U')), PistonKey::U);
+        assert_eq!(tcod_map_key(tcod_key_from_char('V')), PistonKey::V);
+        assert_eq!(tcod_map_key(tcod_key_from_char('W')), PistonKey::W);
+        assert_eq!(tcod_map_key(tcod_key_from_char('X')), PistonKey::X);
+        assert_eq!(tcod_map_key(tcod_key_from_char('Y')), PistonKey::Y);
+        assert_eq!(tcod_map_key(tcod_key_from_char('Z')), PistonKey::Z);
+        // Lowercase characters
+        assert_eq!(tcod_map_key(tcod_key_from_char('a')), PistonKey::A);
+        assert_eq!(tcod_map_key(tcod_key_from_char('b')), PistonKey::B);
+        assert_eq!(tcod_map_key(tcod_key_from_char('c')), PistonKey::C);
+        assert_eq!(tcod_map_key(tcod_key_from_char('d')), PistonKey::D);
+        assert_eq!(tcod_map_key(tcod_key_from_char('e')), PistonKey::E);
+        assert_eq!(tcod_map_key(tcod_key_from_char('f')), PistonKey::F);
+        assert_eq!(tcod_map_key(tcod_key_from_char('g')), PistonKey::G);
+        assert_eq!(tcod_map_key(tcod_key_from_char('h')), PistonKey::H);
+        assert_eq!(tcod_map_key(tcod_key_from_char('i')), PistonKey::I);
+        assert_eq!(tcod_map_key(tcod_key_from_char('j')), PistonKey::J);
+        assert_eq!(tcod_map_key(tcod_key_from_char('k')), PistonKey::K);
+        assert_eq!(tcod_map_key(tcod_key_from_char('l')), PistonKey::L);
+        assert_eq!(tcod_map_key(tcod_key_from_char('m')), PistonKey::M);
+        assert_eq!(tcod_map_key(tcod_key_from_char('n')), PistonKey::N);
+        assert_eq!(tcod_map_key(tcod_key_from_char('o')), PistonKey::O);
+        assert_eq!(tcod_map_key(tcod_key_from_char('p')), PistonKey::P);
+        assert_eq!(tcod_map_key(tcod_key_from_char('q')), PistonKey::Q);
+        assert_eq!(tcod_map_key(tcod_key_from_char('r')), PistonKey::R);
+        assert_eq!(tcod_map_key(tcod_key_from_char('s')), PistonKey::S);
+        assert_eq!(tcod_map_key(tcod_key_from_char('t')), PistonKey::T);
+        assert_eq!(tcod_map_key(tcod_key_from_char('u')), PistonKey::U);
+        assert_eq!(tcod_map_key(tcod_key_from_char('v')), PistonKey::V);
+        assert_eq!(tcod_map_key(tcod_key_from_char('w')), PistonKey::W);
+        assert_eq!(tcod_map_key(tcod_key_from_char('x')), PistonKey::X);
+        assert_eq!(tcod_map_key(tcod_key_from_char('y')), PistonKey::Y);
+        assert_eq!(tcod_map_key(tcod_key_from_char('z')), PistonKey::Z);
+        // Digits
+        assert_eq!(tcod_map_key(tcod_key_from_char('0')), PistonKey::D0);
+        assert_eq!(tcod_map_key(tcod_key_from_char('1')), PistonKey::D1);
+        assert_eq!(tcod_map_key(tcod_key_from_char('2')), PistonKey::D2);
+        assert_eq!(tcod_map_key(tcod_key_from_char('3')), PistonKey::D3);
+        assert_eq!(tcod_map_key(tcod_key_from_char('4')), PistonKey::D4);
+        assert_eq!(tcod_map_key(tcod_key_from_char('5')), PistonKey::D5);
+        assert_eq!(tcod_map_key(tcod_key_from_char('6')), PistonKey::D6);
+        assert_eq!(tcod_map_key(tcod_key_from_char('7')), PistonKey::D7);
+        assert_eq!(tcod_map_key(tcod_key_from_char('8')), PistonKey::D8);
+        assert_eq!(tcod_map_key(tcod_key_from_char('9')), PistonKey::D9);
+        // Shift + Digits
+        assert_eq!(tcod_map_key(tcod_key_from_char('!')), PistonKey::Exclaim);
+        assert_eq!(tcod_map_key(tcod_key_from_char('@')), PistonKey::At);
+        assert_eq!(tcod_map_key(tcod_key_from_char('#')), PistonKey::Hash);
+        assert_eq!(tcod_map_key(tcod_key_from_char('$')), PistonKey::Dollar);
+        assert_eq!(tcod_map_key(tcod_key_from_char('%')), PistonKey::Percent);
+        assert_eq!(tcod_map_key(tcod_key_from_char('^')), PistonKey::Caret);
+        assert_eq!(tcod_map_key(tcod_key_from_char('&')), PistonKey::Ampersand);
+        assert_eq!(tcod_map_key(tcod_key_from_char('*')), PistonKey::Asterisk);
+        assert_eq!(tcod_map_key(tcod_key_from_char('(')), PistonKey::LeftParen);
+        assert_eq!(tcod_map_key(tcod_key_from_char(')')), PistonKey::RightParen);
+    }
+
+    #[test]
+    fn test_tcod_map_mouse() {
+        use self::piston::input::mouse::MouseButton;
+
+        use super::tcod::input::Mouse;
+        use super::tcod_map_mouse;
+
+        let prev_state = Mouse {
+            lbutton: false,
+           ..Mouse::default()
+        };
+        let state = Mouse {
+            lbutton: true,
+            ..Mouse::default()
+        };
+
+        assert_eq!(tcod_map_mouse(prev_state, &state), MouseButton::Left);
+
+        let prev_state = Mouse {
+            rbutton: false,
+           ..Mouse::default()
+        };
+        let state = Mouse {
+            rbutton: true,
+            ..Mouse::default()
+        };
+
+        assert_eq!(tcod_map_mouse(prev_state, &state), MouseButton::Right);
+
+        let prev_state = Mouse {
+            mbutton: false,
+           ..Mouse::default()
+        };
+        let state = Mouse {
+            mbutton: true,
+            ..Mouse::default()
+        };
+
+        assert_eq!(tcod_map_mouse(prev_state, &state), MouseButton::Middle);
+
+        let prev_state = Mouse {
+           ..Mouse::default()
+        };
+        let state = Mouse {
+            ..Mouse::default()
+        };
+
+        assert_eq!(tcod_map_mouse(prev_state, &state), MouseButton::Unknown);
     }
 }
