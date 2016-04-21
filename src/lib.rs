@@ -470,9 +470,9 @@ mod tests {
             )
         );
 
-        assert_eq!(window.should_close(), false);
+        assert!(!window.should_close());
         window.set_should_close(true);
-        assert_eq!(window.should_close(), true);
+        assert!(window.should_close());
 
         window.swap_buffers();
 
@@ -505,9 +505,9 @@ mod tests {
         window.set_title("some other name".to_owned());
         assert_eq!(window.get_title(), "some other name".to_owned());
 
-        assert_eq!(window.get_exit_on_esc(), false);
+        assert!(!window.get_exit_on_esc());
         window.set_exit_on_esc(true);
-        assert_eq!(window.get_exit_on_esc(), true);
+        assert!(window.get_exit_on_esc());
 
         window.set_capture_cursor(true);
     }
