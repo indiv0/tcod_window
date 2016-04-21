@@ -65,7 +65,7 @@ env:
     # Due to limitations in SDL, tests for this project need to be run serially.
     - RUST_TEST_THREADS=1
     # encrypted Github token for doc upload
-    - secure: kQKcc0WiucWrIGC+t7ASfoKGs9nGdll94egke0pFTBIsh8e4dPgUK6hGBGfJE32FJS6VB3lyoAqNQQDCLnYwxsq2IOL4T1F65K4bDS9IvR1HXduvXj+z5NHU5VAerD7Czc0q+9Na2qEZQPEW9u6+eX4xX5E0c4p0eUoGMNQaXYg5bzRJ68uC8d8WAj2KOXx8G7Seak5xBmvP5vOBWJjCMv7leVoWwfP9OI+MizzDhzeYL5ux49STsP67/jrL37Otdly6Cvv9NsamCyoZ3McQq436pViUl2XJ3/ctvc17JNm+FdIdjKaZL1fMje2xyvYK9weyKjRiMmkDETWvsCFqL/Y37Oe80kh+KFKYSxgl6Q5IaiO35hUjBRDVmi/zuZGD8cI3GVE/qFj2yN+/srBzORgpJgofPaMurI6udQoCNiNqvAh9PJ0KpKvkCGNTUUXDYcv9k4BLIpudY0HqTNM341MkOD98NC99TsA9eJwWyEre3rLqkVztTzkGa7VM1MT/6bgVi+BdPfO3AEy5xs1Y4ut2Qzl54rFK2AGRFDdJ4CvyQykBg/EDxpkI7w0VdqUyOrSWNQFqv4xTwXPd91r2OhUUm76gsN50gwZTxJvae/aIGRdd3GyNQ149HHzNB5HLpct5KsGlCcwQ7QcbKFQkpCLC0R3sgeKGUaRbqZjwN5M=
+    - secure: kcplzQ7lKMwmFoggIkuZqWiwCnphntXs5ueJNw3tVdlND54DP4oFNlgZVgrTEdYARB333fHWt4tTMLeFjO7WIeVcpiMe9JAzc2J00GWZrYzJfvyN/+rvu/3eOpYiH02NeJg/uTTWV1iJjVtMi9F3LK6QnmaCkd2P8b6c+Yq2mow=
 branches:
   only:
     - master
