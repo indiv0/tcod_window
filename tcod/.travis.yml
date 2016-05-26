@@ -1,0 +1,40 @@
+language: rust
+os:
+- linux
+- osx
+rust:
+- nightly
+- stable
+before_install:
+- '[ "$TRAVIS_OS_NAME" = linux ] && sudo apt-get update -qq || brew update'
+install:
+- '[ "$TRAVIS_OS_NAME" = linux ] && sudo apt-get install -y libsdl1.2-dev || brew install sdl'
+script:
+- cargo build --verbose
+- cargo test --verbose
+- cargo test --features "rustc-serialize serde" --verbose
+after_success: ! '[ $TRAVIS_BRANCH = master ] &&
+
+  [ "$TRAVIS_OS_NAME" = linux ] &&
+
+  [ $TRAVIS_PULL_REQUEST = false ] &&
+
+  cargo doc &&
+
+  echo ''<meta http-equiv=refresh content="0;url=tcod/index.html">'' > target/doc/index.html
+  &&
+
+  git config --global user.email "travis@travis-ci.org" &&
+
+  git config --global user.name "travis-ci" &&
+
+  sudo pip install ghp-import &&
+
+  ghp-import -n target/doc &&
+
+  git push -fq https://${TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages
+
+'
+env:
+  global:
+  - secure: h21kqC5s6iVs4p5n9KFZ5ZTWtPF8nGVFpaPP6t/1Sg+xMaHMDyr/sBYI1gsNGTXrVsiP2Zs6cRTBEbX12PVL6MXFgKpdhKG1+lBCMk6HxU8/W2UHCh6Y38+W4Ybyv5fuoWqkUOX3yODNkRZWrqNhdm8lCdE2uGczkIKPi7hDYMM=
