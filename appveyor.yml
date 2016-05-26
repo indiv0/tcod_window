@@ -37,7 +37,4 @@ build: false
 # Equivalent to Travis' `script` phase
 test_script:
   - cargo build --verbose
-  # This is a temporary measure to fix the doc tests failing on `pc-window-gnu`
-  # builds with a "cannot find -lSDL.dll" error.
-  - cp target/debug/build/tcod-sys-*/out/SDL.dll target/debug/deps/SDL.dll.dll
   - cargo test --verbose
