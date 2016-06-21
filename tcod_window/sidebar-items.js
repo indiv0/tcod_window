@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["tcod_map_key","Maps a TCOD key to a piston-input key."],["tcod_map_mouse","Maps a TCOD mouse state change to a piston-input button."]],"struct":[["TcodWindow","A window implemented by a TCOD back-end."]]});

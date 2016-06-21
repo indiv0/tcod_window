@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["c_void","Type used to construct void pointers for use with C."]],"struct":[["CString","A type representing an owned C-compatible string"]],"trait":[["AsNative",""],["FromNative",""]],"type":[["c_char",""],["c_float",""],["c_int",""],["c_uint",""],["uint8_t",""]]});

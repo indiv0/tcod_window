@@ -1,0 +1,10 @@
+(function() {var implementors = {};
+implementors['tcod'] = ["impl&lt;'a&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='tcod/bsp/struct.Bsp.html' title='tcod::bsp::Bsp'>Bsp</a>&lt;'a&gt;","impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='tcod/console/struct.Offscreen.html' title='tcod::console::Offscreen'>Offscreen</a>","impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='tcod/map/struct.Map.html' title='tcod::map::Map'>Map</a>","impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='tcod/namegen/struct.Namegen.html' title='tcod::namegen::Namegen'>Namegen</a>","impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='tcod/noise/struct.Noise.html' title='tcod::noise::Noise'>Noise</a>","impl&lt;'a&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='tcod/pathfinding/struct.AStar.html' title='tcod::pathfinding::AStar'>AStar</a>&lt;'a&gt;","impl&lt;'a&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='tcod/pathfinding/struct.Dijkstra.html' title='tcod::pathfinding::Dijkstra'>Dijkstra</a>&lt;'a&gt;","impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='tcod/random/struct.Rng.html' title='tcod::random::Rng'>Rng</a>",];
+
+            if (window.register_implementors) {
+                window.register_implementors(implementors);
+            } else {
+                window.pending_implementors = implementors;
+            }
+        
+})()
