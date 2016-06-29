@@ -13,7 +13,7 @@
         <td colspan="2">
             <a href="https://indiv0.github.io/tcod_window/tcod_window" title="API Docs"><img src="https://img.shields.io/badge/API-docs-blue.svg" alt="api-docs-badge"></img></a>
             <a href="https://crates.io/crates/tcod_window" title="Crates.io"><img src="https://img.shields.io/crates/v/tcod_window.svg" alt="crates-io"></img></a>
-            <a href="#License" title="License: MIT/Apache-2.0"><img src="https://img.shields.io/crates/l/tcod_window.svg" alt="license-badge"></img></a>
+            <a href="#license" title="License: MIT/Apache-2.0"><img src="https://img.shields.io/crates/l/tcod_window.svg" alt="license-badge"></img></a>
             <a href="https://coveralls.io/github/indiv0/tcod_window?branch=master" title="Coverage Status"><img src="https://coveralls.io/repos/github/indiv0/tcod_window/badge.svg?branch=master" alt="coveralls-badge"></img></a>
         </td>
     </tr>
